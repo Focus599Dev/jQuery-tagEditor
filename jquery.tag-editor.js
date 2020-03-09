@@ -54,7 +54,7 @@
         if (window.getSelection) $(document).off('keydown.tag-editor').on('keydown.tag-editor', function(e){
             if (e.which == 8 || e.which == 46 || e.ctrlKey && e.which == 88) {
                 try {
-                    var sel = getSelection(), el = document.activeElement.tagName != 'INPUT' ? $(sel.getRangeAt(0).startContainer.parentNode).closest('.tag-editor') : 0;
+                    var sel = getSelection(), el = document.activeElement.tagName == 'BODY' ? $(sel.getRangeAt(0).startContainer.parentNode).closest('.tag-editor') : 0;
                 } catch(e){ el = 0; }
                 if (sel.rangeCount > 0 && el && el.length) {
                     var tags = [], splits = sel.toString().split(el.prev().data('options').dregex);
@@ -111,7 +111,9 @@
                 if (o.maxTags && ed.data('tags').length >= o.maxTags) { ed.find('input').blur(); return false; }
 
                 blur_result = true
-                $('input:focus', ed).blur();
+                
+                // $('input:focus', ed).blur();
+
                 if (!blur_result) return false;
                 blur_result = true
 
@@ -130,6 +132,7 @@
                         }
                     });
                 }
+
 
                 if (loc == 'before') {
                     $(new_tag).insertBefore(closest_tag.closest('li')).find('.tag-editor-tag').click();
@@ -310,6 +313,7 @@
                 }
                 // enter key
                 else if (e.which == 13) {
+
                     ed.trigger('click', [$t.closest('li').next('li').find('.tag-editor-tag')]);
 
                     // trigger blur if maxTags limit is reached
